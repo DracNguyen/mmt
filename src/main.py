@@ -4,16 +4,20 @@ from tkinter import  filedialog
 from tkinter import messagebox
 import os
 
+FILESIZE = 1024*1024
+WINDOWSIZESTRING = "450x560+500+200"
+
 root = Tk()
 root.title("Shareit")
-root.geometry("450x560+500+200")
+root.geometry(WINDOWSIZESTRING)
 root.configure(bg= "#f4fdfe")
 root.resizable(False,False)
+
 
 def Send():
     window=Toplevel(root)
     window.title("Send")
-    window.geometry("450x560+500+200")
+    window.geometry(WINDOWSIZESTRING)
     window.configure(bg="#f4fdfe")
     window.resizable(False,False)
 
@@ -32,7 +36,7 @@ def Send():
         print('waiting for any incoming connections....')
         conn,addr=s.accept()
         file=open(filename,'rb')
-        file_data=file.read(1024)
+        file_data=file.read(FILESIZE)
         conn.send(file_data)
         print("Data has been transmitted successfully..")
 
@@ -60,7 +64,7 @@ def Receive():
     main.title("Receive")
     main.geometry('450x560+500+200')
     main.configure(bg="#f4fdfe")
-    main.resizeable(False, False)
+    main.resizable(False, False)
     
     def receiver():
         ID = SenderID.get()
@@ -70,7 +74,7 @@ def Receive():
         port=8080
         s.connect((ID,port))
         file = open(filename1,'wb')
-        file_data = s.recv(1024)
+        file_data = s.recv(FILESIZE)
         file.write(file_data)
         file.close()
         print("File has been received successfully")
@@ -103,7 +107,7 @@ def Receive():
 
 
 #icon
-image_icon=PhotoImage(file="Image/icon.png")
+image_icon=PhotoImage(file="Image/app_icon.png")
 root.iconphoto(False,image_icon)
 
 
@@ -111,11 +115,11 @@ Label(root, text="File Transfer",font = ('Acumin Variable Concept',20,'bold'),bg
 
 Frame(root, width=400,height=2,bg="#f3f5f6").place(x=25,y=80)
 
-send_image=PhotoImage("Image/send.png")
+send_image=PhotoImage("Image/send_icon.png")
 send=Button(root,image=send_image,bg="#f4fdfe",bd=0,command=Send)
 send.place(x=50,y=100)
 
-receive_image=PhotoImage("Image/receive.png")
+receive_image=PhotoImage("Image/receive_icon.png")
 receive=Button(root,image=receive_image,bg="#f4fdfe",bd=0,command=Receive)
 receive.place(x=300,y=100)
 
