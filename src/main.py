@@ -1,10 +1,10 @@
-from tkinler import *
+from tkinter import *
 import socket
 from tkinter import  filedialog 
 from tkinter import messagebox
 import os
 
-root  = TK()
+root = Tk()
 root.title("Shareit")
 root.geometry("450x560+500+200")
 root.configure(bg= "#f4fdfe")
@@ -37,8 +37,8 @@ def Send():
         print("Data has been transmitted successfully..")
 
     #icon
-    image_icon1=PhotoImage(file="Image/send.png")
-    window.iconphoto(False,iamge_icon1)
+    image_icon1=PhotoImage(file="Image/send_icon.png")
+    window.iconphoto(False,image_icon1)
     
     Sbackground=PhotoImage(file="Image/sender.png")
     Label(window,image=Sbackground).place(x=-2,y=0)
@@ -47,7 +47,7 @@ def Send():
     Label(window,image=Mbackground,bg='#f4fdfe').place(x=100,y=260)
 
     host=socket.gethostname()
-    Label(window,text=f'ID:{host}',bg='white',fg='black').place(x-140,y-290)
+    Label(window,text=f'ID:{host}',bg='white',fg='black').place(x=140,y=290)
 
     Button(window,text="+ select file",width=10,height =1 ,font='arial 14 bold', bg="#fff",fg="#000",command=select_file).place(x=160,y=150)
     Button(window,text="SEND",width=8,height=1,font='arial 14 bold', bg="#000",fg="#fff").place(x=300,y=150)
@@ -76,7 +76,7 @@ def Receive():
         print("File has been received successfully")
 
     # icon
-    image_icon1 = PhotoImage(file="Image/receive.png")
+    image_icon1 = PhotoImage(file="Image/receive_icon.png")
     main.iconphoto(False, image_icon1)
 
     Hbackground = PhotoImage(file="Image/receiver.png")
@@ -85,7 +85,7 @@ def Receive():
     logo = PhotoImage(file='Image/profile.png')
     Label(main, image=logo, bg="f4fdfe").place(x=10, y=250)
 
-    Label(main, text = "Receive", font = ('arial', 20), bg=f4fdfe).place(x=100,y=280)
+    Label(main, text = "Receive", font = ('arial', 20), bg="f4fdfe").place(x=100,y=280)
     
     Label(main, text = "Input sender id", font = ('arial', 10, 'bold'), bg ="f4fdfe").place(x=20,y=340)
     SenderID = Entry(main, width=25, fg="black", border=2, bg='while', font=('arial', 15))
