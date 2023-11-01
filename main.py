@@ -1,7 +1,7 @@
 from tkinter import *
 import socket
-from tkinter import  filedialog 
-from tkinter import messagebox
+from tkinter import filedialog 
+from tkinter import messagebox 
 import os
 
 FILESIZE = 1024*1024
@@ -41,8 +41,8 @@ def Send():
         print("Data has been transmitted successfully..")
 
     #icon
-    image_icon1=PhotoImage(file="Image/send_icon.png")
-    window.iconphoto(False,image_icon1)
+    image_icon=PhotoImage(file="Image/send.png")
+    window.iconphoto(False,image_icon)
     
     Sbackground=PhotoImage(file="Image/sender.png")
     Label(window,image=Sbackground).place(x=-2,y=0)
@@ -80,8 +80,8 @@ def Receive():
         print("File has been received successfully")
 
     # icon
-    image_icon1 = PhotoImage(file="Image/receive_icon.png")
-    main.iconphoto(False, image_icon1)
+    image_icon = PhotoImage(file="Image/receive.png")
+    main.iconphoto(False, image_icon)
 
     Hbackground = PhotoImage(file="Image/receiver.png")
     Label(main, image=Hbackground).place(x=-2, y=0)
@@ -115,11 +115,11 @@ Label(root, text="File Transfer",font = ('Acumin Variable Concept',20,'bold'),bg
 
 Frame(root, width=400,height=2,bg="#f3f5f6").place(x=25,y=80)
 
-send_image=PhotoImage("Image/send_icon.png")
+send_image=PhotoImage("Image/send.png")
 send=Button(root,image=send_image,bg="#f4fdfe",bd=0,command=Send)
 send.place(x=50,y=100)
 
-receive_image=PhotoImage("Image/receive_icon.png")
+receive_image=PhotoImage("Image/receive.png")
 receive=Button(root,image=receive_image,bg="#f4fdfe",bd=0,command=Receive)
 receive.place(x=300,y=100)
 
