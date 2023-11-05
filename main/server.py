@@ -23,20 +23,6 @@ root.resizable(False,False)
 image_icon=PhotoImage(file="Image/app_icon.png")
 root.iconphoto(False,image_icon)
 
-# Label(root, text="Client",font = ('Acumin Variable Concept',20,'bold'),bg="#f4fdfe").place(x=20,y=30)
-
-# Frame(root, width=400,height=2,bg="#f3f5f6").place(x=25,y=80)
-
-# send=Button(root,text="UPLOAD",font=('Acumin Variable Concept',17,'bold') ,bg="#f4fdfe")
-# send.place(x=50,y=100)
-# # send.pack(side = LEFT)
-
-# receive=Button(root,text="DOWNLOAD",font=('Acumin Variable Concept',17,'bold'),bg="#f4fdfe")
-# receive.place(x=250,y=100)
-
-# Label(root,text="Send",font=('Acumin Variable Concept',17,'bold'),bg="#f4fdfe").place(x=65,y=200)
-# Label(root,text="Receive",font=('Acumin Variable Concept',17,'bold'),bg="#f4fdfe").place(x=300,y=200)
-
 Label(root, text="Server",font = ('Acumin Variable Concept',20,'bold'),bg="#f4fdfe").place(x=20,y=30)
 Frame(root, width=400,height=2,bg="#f3f5f6").place(x=20,y=200)
 
@@ -107,12 +93,6 @@ def handle_client(conn, addr):
     
     conn.close()
 
-
-# def printList(list, show):
-#     for elem in list:
-#         show.insert(END, "Client:" , elem)
-
-
 def printList(list, show):
     for elem in list:
         show.insert(END, "Client:" , f"{elem[0]}:{elem[1]}")
@@ -124,9 +104,6 @@ def is_valid_input(input):
         return True
     except:
         return False
-
-
-
 
 def Ping(ip_var):
     # for c in connlist:
@@ -140,10 +117,6 @@ def Ping(ip_var):
         if is_valid_input(input):
             ip, port = input.split(':')
             result = False
-            # for c in connlist:
-            #     _ip = c[0].getpeername()[0]
-            #     _port = c[0].getpeername()[1]
-            #     if ip==_ip and port==_port:
             for addr in addrlist:
                 if ip == addr[0] and port == str(addr[1]):
                     result = True
@@ -204,13 +177,6 @@ def ClientList():
                     po = c[0].getpeername()[1]
                     if ip == pe and port == str(po):
                         result = True
-                        # print("Address is valid")
-                        # c[0].send("DISCOVER".encode(FORMAT))
-                        # while True:
-                        #     data = c[0].recv(SIZE).decode(FORMAT)
-                        #     data = data.split("@")
-                        #     print(data[1])
-                        #     break
                         
                         wd=Toplevel(window)
                         wd.title("DISCOVER")

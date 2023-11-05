@@ -21,6 +21,8 @@ root.resizable(False,False)
 image_icon=PhotoImage(file="Image/app_icon.png")
 root.iconphoto(False,image_icon)
 
+loggedin = False
+
 IP = socket.gethostbyname(socket.gethostname())
 PORT = 4456
 DLPORT = 4444
@@ -102,8 +104,6 @@ def select_file():
         client.send(f"PUBLISH@{name}".encode(FORMAT))
     
 def Publish():
-    # print("Publish")
-    # PrintAllLocal()
     select_file()
     
     # client.send("LIST".encode(FORMAT))
@@ -155,6 +155,7 @@ def Connect():
     client.connect(ADDRESS)
     # client.connect(ADDR)
     # _thread.start_new_thread(receive_thread, ())
+    loggedin = True
     _thread.start_new_thread(handle_server, ())
 
 
@@ -163,10 +164,10 @@ Label(root, text="Enter server's IP address", font= ('Acumin Variable Concept',1
 
 Frame(root, width=400,height=2,bg="#f3f5f6").place(x=25,y=60)
 
-send=Button(root,text="CONNECT",font=('Acumin Variable Concept',15,'bold') ,bg="#f4fdfe",command=Connect)
-send.place(x=260,y=100)
+con=Button(root,text="CONNECT",font=('Acumin Variable Concept',15,'bold'),bg="#f4fdfe",command=Connect)
+con.place(x=260,y=100)
 
-send=Button(root,text="PUBLISH",font=('Acumin Variable Concept',15,'bold') ,bg="#f4fdfe",command=Publish)
+send=Button(root,text="PUBLISH",font=('Acumin Variable Concept',15,'bold'),bg="#f4fdfe",command=Publish)
 send.place(x=160,y=160)
 
 Label(root, text="Enter file name", font= ('Acumin Variable Concept',13),bg="#f4fdfe").place(x=20,y=220)
@@ -203,18 +204,14 @@ def handle_server():
                 # fr = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 # share_thread(peer,port,get)
                 _thread.start_new_thread(partial(share_thread, peer,port,get), ())
-        elif cmd == "DISCOVER":
-            me = HelpDiscover()
-            me = f"MESSAGE@{me}"
-            print(me)
-            client.send(me.encode(FORMAT))
                 
 
 
 
 
 def Logout():
-    client.send("MESSAGE@Disconnected\n".encode(FORMAT))
+    if (loggedin==True):
+        client.send("MESSAGE@Disconnected\n".encode(FORMAT))
     # client.shutdown(1)
     # client.close()
     exit()
