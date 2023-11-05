@@ -35,6 +35,7 @@ published_files = [] # 1 element === (full_directory, filename)
 def receive_thread(filename):
     host_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # host_client.bind(ADDR)
+    host_client.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     host_client.bind((IP,4444))
     host_client.listen()
     # print("Receiving...")
@@ -44,14 +45,19 @@ def receive_thread(filename):
         # thread.start()
         print(f"Peer connected: {addr}\n")
         f = open("downloads/"+filename,"wb")
+        # l = friend.recv(SIZE)
+        # if (l!=filename):
+        #     continue
+        l = friend.recv(SIZE)
         while True:
-            l = friend.recv(SIZE)
             while (l):
                 f.write(l)
                 l = friend.recv(SIZE)
             f.close()
-        # friend.close()
-    # host_client.close()
+            break
+        friend.close()
+        break
+    host_client.close()
 
 def share_thread(peer,port,file):
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -63,6 +69,7 @@ def share_thread(peer,port,file):
     # thefile = GetFile(file)
     # print(thefile)
     print(file)
+    # client_socket.send(f"{file}".encode(FORMAT))
     # client_socket.send(f"OK@Hello {file}\n".encode(FORMAT))
     f = open(file[0], 'rb')
     l = f.read(SIZE)
@@ -189,7 +196,9 @@ def handle_server():
                 print("Found")
                 # todo send the file to peer
                 get = GetFile(file)
-                share_thread(peer,port,get)
+                fr = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                # share_thread(peer,port,get)
+                _thread.start_new_thread(partial(share_thread, peer,port,get), ())
                 
 
 

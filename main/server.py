@@ -301,7 +301,7 @@ def Server():
         conn, addr = server.accept()
         thread = threading.Thread(target=handle_client, args=(conn, addr))
         thread.start()
-        msg = f"[ACTIVE CONNECTIONS] {threading.active_count() - 1}\n"
+        msg = f"[ACTIVE CONNECTIONS] {threading.active_count() - 2}\n"
         box.insert(INSERT, msg)
         print(msg)
     
