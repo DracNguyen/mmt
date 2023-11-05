@@ -23,6 +23,7 @@ root.iconphoto(False,image_icon)
 
 IP = socket.gethostbyname(socket.gethostname())
 PORT = 4456
+DLPORT = 4444
 ADDR = (IP, PORT)
 SIZE = 40960000
 FORMAT = "utf-8"
@@ -36,7 +37,7 @@ def receive_thread(filename):
     host_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # host_client.bind(ADDR)
     host_client.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    host_client.bind((IP,4444))
+    host_client.bind((IP,DLPORT))
     host_client.listen()
     # print("Receiving...")
     while True:
@@ -64,8 +65,8 @@ def receive_thread(filename):
 def share_thread(peer,port,file):
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     print("peer",peer,"port",port)
-    # client_socket.connect((peer,4444))
-    client_socket.connect((peer,4444))
+    # client_socket.connect((peer,DLPORT))
+    client_socket.connect((peer,DLPORT))
     # response = client_socket.recv(SIZE).decode(FORMAT)
     # print("response:", response)
     # thefile = GetFile(file)

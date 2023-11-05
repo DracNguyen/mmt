@@ -89,7 +89,7 @@ def handle_client(conn, addr):
             msg = data[1]
             peer = conn.getpeername()[0]
             port = conn.getpeername()[1]
-            # todo send request to other clients
+            # send request to other clients
             filename = msg
             for c in connlist:
                 if (c[0]!=conn):
@@ -98,44 +98,10 @@ def handle_client(conn, addr):
                     print(send_msg)
                     c[0].send(send_msg.encode(FORMAT))
 
-        elif cmd == "UPLOAD":
-            name, text = data[1], data[2]
-            filepath = os.path.join(SERVER_DATA_PATH, name)
-            with open(filepath, "w") as f:
-                f.write(text)
-
-            send_data = "OK@File uploaded successfully."
-            conn.send(send_data.encode(FORMAT))
-
-        elif cmd == "DELETE":
-            files = os.listdir(SERVER_DATA_PATH)
-            send_data = "OK@"
-            filename = data[1]
-
-            if len(files) == 0:
-                send_data += "The server directory is empty"
-            else:
-                if filename in files:
-                    os.system(f"rm {SERVER_DATA_PATH}/{filename}")
-                    send_data += "File deleted successfully."
-                else:
-                    send_data += "File not found."
-
-            conn.send(send_data.encode(FORMAT))
-
         elif cmd == "LOGOUT":
             connlist.remove(conn)
             addrlist.remove(addr)
             break
-        elif cmd == "HELP":
-            data = "OK@"
-            data += "LIST: List all the files from the server.\n"
-            data += "UPLOAD <path>: Upload a file to the server.\n"
-            data += "DELETE <filename>: Delete a file from the server.\n"
-            data += "LOGOUT: Disconnect from the server.\n"
-            data += "HELP: List all the commands."
-
-            conn.send(data.encode(FORMAT))
 
     print(f"[DISCONNECTED] {addr} disconnected")
     
@@ -317,7 +283,7 @@ start.place(x=50,y=100)
 clist=Button(root,text="Client List",font=('Acumin Variable Concept',17,'bold') ,bg="#f4fdfe", command=startClientList)
 clist.place(x=250,y=100)
 
-background=PhotoImage(file="Image/background.png")
+# background=PhotoImage(file="Image/background.png")
 
 
 
