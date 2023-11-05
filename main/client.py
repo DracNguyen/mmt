@@ -45,9 +45,11 @@ def receive_thread(filename):
         # thread.start()
         print(f"Peer connected: {addr}\n")
         f = open("downloads/"+filename,"wb")
-        # l = friend.recv(SIZE)
+        # l = friend.recv(SIZE).decode(FORMAT)
         # if (l!=filename):
         #     continue
+        #     # break
+        # else:
         l = friend.recv(SIZE)
         while True:
             while (l):
@@ -92,7 +94,8 @@ def select_file():
     # Button(root,text="SEND",width=8,height=1,font='arial 14 bold',bg='#000',fg="#fff",command=Download).place(x=300,y=150)
     if (filedir!=None):
         name = os.path.basename(filedir)
-        print('Published', name)
+        if (name!=""):
+            print('Published', name)
         
         published_files.append((filedir,name))
         client.send(f"PUBLISH@{name}".encode(FORMAT))

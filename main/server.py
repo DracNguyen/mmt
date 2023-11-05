@@ -77,9 +77,11 @@ def handle_client(conn, addr):
             box.insert(INSERT, message)
             print(message)
         elif cmd == "PUBLISH":
-            ip = conn.getpeername()[0]
-            port = conn.getpeername()[1]
+            # ip = conn.getpeername()[0]
+            # port = conn.getpeername()[1]
             filename = data[1]
+            if (filename==""):
+                continue
             for c in connlist:
                 if (c[0]==conn):
                     c[1].append(filename)
