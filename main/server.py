@@ -125,6 +125,7 @@ def handle_client(conn, addr):
 
         elif cmd == "LOGOUT":
             connlist.remove(conn)
+            addrlist.remove(addr)
             break
         elif cmd == "HELP":
             data = "OK@"
@@ -141,15 +142,19 @@ def handle_client(conn, addr):
     conn.close()
 
 
+# def printList(list, show):
+#     for elem in list:
+#         show.insert(END, "Client:" , elem)
+
+
 def printList(list, show):
     for elem in list:
-        show.insert(END, "Client:" ,elem)
-
+        show.insert(END, "Client:" , f"{elem[0]}:{elem[1]}")
 
 
 def is_valid_input(input):
     try:
-        ip, port = input.split(" ")
+        ip, port = input.split(":")
         return True
     except:
         return False
@@ -167,14 +172,20 @@ def Ping(ip_var):
         # print("Fields cannot be empty")    
     else:
         if is_valid_input(input):
-            ip, port = input.split(' ')
-    
+            ip, port = input.split(':')
+            result = False
+            # for c in connlist:
+            #     _ip = c[0].getpeername()[0]
+            #     _port = c[0].getpeername()[1]
+            #     if ip==_ip and port==_port:
             for addr in addrlist:
                 if ip == addr[0] and port == str(addr[1]):
+                    result = True
                     print("Address is valid")
                     messagebox.showinfo("ACTIVED", "This client is currently connected")
-                else:
-                    messagebox.showinfo("Warning", "Address is not valid")
+                    return
+            if (result==False):
+                messagebox.showinfo("Warning", "Address is not valid")
                     # print("Address is not valid")
                         
         else:
@@ -219,14 +230,21 @@ def ClientList():
             # print("Fields cannot be empty")    
         else:
             if is_valid_input(input):
-                ip, port = input.split(' ')
-        
+                ip, port = input.split(':')
+                result = False
                 # for addr in addrlist:
                 for c in connlist:
                     pe = c[0].getpeername()[0]
                     po = c[0].getpeername()[1]
                     if ip == pe and port == str(po):
-                        print("Address is valid")
+                        result = True
+                        # print("Address is valid")
+                        # c[0].send("DISCOVER".encode(FORMAT))
+                        # while True:
+                        #     data = c[0].recv(SIZE).decode(FORMAT)
+                        #     data = data.split("@")
+                        #     print(data[1])
+                        #     break
                         
                         wd=Toplevel(window)
                         wd.title("DISCOVER")
@@ -237,8 +255,6 @@ def ClientList():
                         Label(wd, text="List of sharing files",font = ('Acumin Variable Concept',20,'bold'),bg="#f4fdfe").place(x=20,y=30)
                         # Frame(wd, width=400,height=2,bg="#f3f5f6").place(x=20,y=200)
                         
-                        
-                        ####Phuc ku, onegai
                         show_fileList = Listbox(wd,width=100,height=50)
                         show_fileList.place(x = 0, y = 100)
                         for f in c[1]:
@@ -248,39 +264,11 @@ def ClientList():
                         
                         
                         wd.mainloop()
-                    else:
-                        messagebox.showinfo("Warning", "Address is not valid")
-                        print("Address is not valid")
-                # for conn in connlist:
-                #     diachi = conn.getpeername()[0]
-                #     cong = conn.getpeername()[1]
-                #     if ip == diachi and port == cong:
-                #         print("Address is valid")
-                        
-                #         wd=Toplevel(window)
-                #         wd.title("DISCOVER")
-                #         wd.geometry(WINDOWSIZESTRING)
-                #         wd.configure(bg="#f4fdfe")
-                #         wd.resizable(False,False)
-                    
-                #         Label(wd, text="List files were shared",font = ('Acumin Variable Concept',20,'bold'),bg="#f4fdfe").place(x=20,y=30)
-                #         # Frame(wd, width=400,height=2,bg="#f3f5f6").place(x=20,y=200)
-                        
-                        
-                #         ####Phuc ku, onegai
-                #         show_fileList = Listbox(wd,width=100,height=50)
-                #         show_fileList.place(x = 0, y = 100)
-                #         fileList = []
-
-                #         printList(fileList, show_fileList)
-                        
-                        
-                        
-                #         wd.mainloop()
-                        
-                #     else:
-                #         messagebox.showinfo("Warning", "Address is not valid")
-                #         # print("Address is not valid")
+                        return
+                    # else:
+                if (result==False):
+                    messagebox.showinfo("Warning", "Address is not valid")
+                    print("Address is not valid")
                             
             else:
                 messagebox.showerror("ERROR", "Syntax error")
@@ -320,10 +308,13 @@ def Stop():
 root.protocol("WM_DELETE_WINDOW", Stop)
 
 
+def startClientList():
+    _thread.start_new_thread(ClientList, ())
+
 start=Button(root,text="Start Server",font=('Acumin Variable Concept',17,'bold') ,bg="#f4fdfe", command=ServerThread)
 start.place(x=50,y=100)
 
-clist=Button(root,text="Client List",font=('Acumin Variable Concept',17,'bold') ,bg="#f4fdfe", command=ClientList)
+clist=Button(root,text="Client List",font=('Acumin Variable Concept',17,'bold') ,bg="#f4fdfe", command=startClientList)
 clist.place(x=250,y=100)
 
 background=PhotoImage(file="Image/background.png")

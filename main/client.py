@@ -199,9 +199,14 @@ def handle_server():
                 print("Found")
                 # todo send the file to peer
                 get = GetFile(file)
-                fr = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                # fr = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 # share_thread(peer,port,get)
                 _thread.start_new_thread(partial(share_thread, peer,port,get), ())
+        elif cmd == "DISCOVER":
+            me = HelpDiscover()
+            me = f"MESSAGE@{me}"
+            print(me)
+            client.send(me.encode(FORMAT))
                 
 
 
